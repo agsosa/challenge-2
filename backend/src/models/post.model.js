@@ -67,7 +67,11 @@ model.deleteById = async function (postId) {
  * @return {Promise<Array<postModel>>} Promise that will resolve with an array of postModel objects, without the content field
  */
 model.getAllWithoutContent = async function () {
-  return model.findAll({ include: 'category', attributes: { exclude: ['categoryId', 'content'] } });
+  return model.findAll({
+    include: 'category',
+    order: [['createdAt', 'DESC']],
+    attributes: { exclude: ['categoryId', 'content'] },
+  });
 };
 
 /**
