@@ -41,6 +41,4 @@ const model = db.instance.define('posts', {
   },
 });
 
-// Model methods
-
 module.exports = model;

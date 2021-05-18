@@ -14,19 +14,15 @@ const model = db.instance.define('categories', {
   locale_es: {
     // Spanish translation
     type: DataTypes.STRING,
-    unique: true,
     allowNull: false,
     defaultValue: 'NO_TRANSLATION',
   },
   locale_en: {
     // English translation
     type: DataTypes.STRING,
-    unique: true,
     allowNull: false,
     defaultValue: 'NO_TRANSLATION',
   },
 });
-
-// Model methods
 
 module.exports = model;

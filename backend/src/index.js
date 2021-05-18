@@ -23,7 +23,7 @@ app.use(helmet());
 
 // Configure routes
 app.use('/api/posts', routes.posts);
-// app.use('/api/categories', routes.categories);
+app.use('/api/categories', routes.categories);
 app.get('/', (req, res) => {
   res.send('OK');
 });
