@@ -7,6 +7,7 @@ module.exports = {
       '@': path.resolve(__dirname, 'src/'),
       '@components': path.resolve(__dirname, 'src/components'),
       '@lib': path.resolve(__dirname, 'src/lib'),
+      '@styles': path.resolve(__dirname, 'src/styles'),
       '@pages': path.resolve(__dirname, 'src/pages'),
     },
   },
