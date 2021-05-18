@@ -6,13 +6,13 @@ const controller = require('@controllers/posts.controller');
 router.get('/', controller.findAll);
 
 // Get a single post by id
-// router.get('/:id', controller.findOne);
+router.get('/:id', controller.findOne);
 
 // Create a new post
-// router.post('/', controller.create);
+router.post('/', controller.create);
 
 // Update a post by id
-// router.patch('/:id', controller.update);
+router.patch('/:id', controller.update);
 
 // Delete a transaction by id
 router.delete('/:id', controller.delete);
