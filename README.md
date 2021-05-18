@@ -1,3 +1,5 @@
+Simple backend/frontend blog CRUD API made for a challenge
+
 # Backend
 
 Deployed to https://akchallenge2.herokuapp.com/
