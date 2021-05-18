@@ -5,7 +5,7 @@ const helpers = require('@lib/helpers');
 exports.delete = async function (req, res) {
   try {
     await categoryModel.deleteById(req.params.id);
-    helpers.sendSuccessResponse(res, 'CATEGORY_DELETED', result);
+    helpers.sendSuccessResponse(res, 'CATEGORY_DELETED', {});
   } catch (error) {
     helpers.sendFailedResponse(res, error, 500);
   }

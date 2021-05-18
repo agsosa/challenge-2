@@ -58,7 +58,7 @@ model.deleteById = async function (categoryId) {
   try {
     // Parse ID param
     const id = Number.parseInt(categoryId);
-    if (parsedId == null || parsedId < 0 || Number.isNaN(parsedId)) throw new Error('INVALID_CATEGORY_ID');
+    if (id == null || id < 0 || Number.isNaN(id)) throw new Error('INVALID_CATEGORY_ID');
 
     const result = await model.destroy({ where: { id } }); // result: number, the amount of entries destroyed
 
