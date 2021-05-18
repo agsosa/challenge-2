@@ -1,12 +1,29 @@
 require('dotenv').config();
 require('module-alias/register');
 const express = require('express');
+const compression = require('compression');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const cors = require('cors');
+
 const database = require('@lib/database');
 const helpers = require('@lib/helpers');
+const routes = require('@routes');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Configure middlewares
+app.set('trust proxy', 1); // Heroku
+app.use(compression());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(helmet());
+// app.use(cors({}));
+
+// Configure routes
+app.use('/api/posts', routes.posts);
+// app.use('/api/categories', routes.categories);
 app.get('/', (req, res) => {
   res.send('OK');
 });
