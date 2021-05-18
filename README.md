@@ -1,6 +1,7 @@
 Simple backend/frontend blog CRUD API made for a challenge
 
 # Backend
+Node.js + Express, Sequelize, MySQL
 
 Deployed to https://akchallenge2.herokuapp.com/
 
