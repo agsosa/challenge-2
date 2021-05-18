@@ -26,6 +26,7 @@
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
+    "request": "^2.88.2",
     "sequelize": "^6.6.2"
   },
   "devDependencies": {

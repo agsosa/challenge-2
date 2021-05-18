@@ -1,3 +1,7 @@
+const request = require('request');
+
+exports.env = process.env.NODE_ENV || 'development';
+
 /**
  * Helper function to send an error response
  * @param {object} res - The express response object
@@ -40,4 +44,17 @@ exports.validateID = (postId) => {
   else return id;
 };
 
-exports.env = process.env.NODE_ENV || 'development';
+/**
+ * Check if an URL contains an image (by reading headers content-type)
+ * @param {string} imageUrl - The image url to validate
+ * @return {Promise<boolean>} Promise that will always resolve with true if the url contains an image, false if not
+ */
+exports.validateImageUrl = async (imageUrl) => {
+  return new Promise((resolve) => {
+    request(imageUrl, { method: 'HEAD' }, function (err, res, body) {
+      if (res && res.headers && res.headers['content-type'] && res.headers['content-type'].startsWith('image'))
+        resolve(true);
+      else resolve(false);
+    });
+  });
+};

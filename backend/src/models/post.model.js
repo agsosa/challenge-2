@@ -95,15 +95,12 @@ model.updateInfo = async function (postId, title = null, content = null, categor
 
       updateParams.categoryId = categoryId;
     }
-
     if (imageUrl) {
-      // TODO: Validate image url & update postman
-      updateParams.image_url = imageUrl;
+      if (await helpers.validateImageUrl(imageUrl)) updateParams.image_url = imageUrl;
+      else throw new Error('INVALID_IMAGE_URL');
     }
 
     const result = await model.update(updateParams, { where: { id } }); // Number, amount of destroyed entries
-
-    console.log(result);
 
     if (!result || result.length === 0 || result[0] === 0) throw new Error('POST_NOT_FOUND');
 
@@ -128,12 +125,12 @@ model.add = async function (title, content, category_id, image_url) {
     const categoryId = helpers.validateID(category_id);
     if (categoryId === -1) throw new Error('INVALID_CATEGORY_ID');
 
-    // Get title & content
+    // Validate title, content, image url
     if (!title) throw new Error('EMPTY_TITLE_NOT_ALLOWED');
     if (!content) throw new Error('EMPTY_CONTENT_NOT_ALLOWED');
-
     if (image_url) {
-      // TODO: Validate image url & update psostman
+      const isValidImageUrl = await helpers.validateImageUrl(image_url);
+      if (!isValidImageUrl) throw new Error('INVALID_IMAGE_URL');
     }
 
     const result = await model.create({ title, content, categoryId, image_url }); // result: object of postModel

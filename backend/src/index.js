@@ -57,6 +57,6 @@ app.use(function (req, res, next) {
 // Initialize database & start server
 database.initialize().then(() => {
   app.listen(port, () => {
-    console.log(`[APP] Listening on http://localhost:${port}`);
+    console.log(`[APP] Listening on PORT ${port}`);
   });
 });
