@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('@lib/database');
+const helpers = require('@lib/helpers');
 
 /* 
    Model definition
@@ -56,9 +57,8 @@ model.add = async function (locale_es, locale_en) {
  */
 model.deleteById = async function (categoryId) {
   try {
-    // Parse ID param
-    const id = Number.parseInt(categoryId);
-    if (id == null || id < 0 || Number.isNaN(id)) throw new Error('INVALID_CATEGORY_ID');
+    const id = helpers.validateID(categoryId);
+    if (id === -1) throw new Error('INVALID_CATEGORY_ID');
 
     const result = await model.destroy({ where: { id } }); // result: number, the amount of entries destroyed
 

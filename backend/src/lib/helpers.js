@@ -29,4 +29,15 @@ exports.sendSuccessResponse = (res, message, data) => {
   });
 };
 
+/**
+ * Validate & parse a possible sql id
+ * @param {any} postId - The ID to parse & validate
+ * @return {number} The parsed id or -1 if the parameter is not a valid id
+ */
+exports.validateID = (postId) => {
+  const id = Number.parseInt(postId);
+  if (id == null || id < 0 || Number.isNaN(id)) return -1;
+  else return id;
+};
+
 exports.env = process.env.NODE_ENV || 'development';

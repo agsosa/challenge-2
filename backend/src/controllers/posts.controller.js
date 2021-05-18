@@ -24,7 +24,7 @@ exports.findAll = async function (req, res) {
 // PATCH api/posts/:id
 exports.update = async function (req, res) {
   try {
-    await postModel.updateInfo(req.params.id, req.body.title, req.body.content, req.body.categoryId, req.body.image);
+    await postModel.updateInfo(req.params.id, req.body.title, req.body.content, req.body.categoryId, req.body.imageUrl);
     helpers.sendSuccessResponse(res, 'POST_UPDATED', {});
   } catch (error) {
     helpers.sendFailedResponse(res, error, 500);
@@ -34,7 +34,7 @@ exports.update = async function (req, res) {
 // POST api/posts
 exports.create = async function (req, res) {
   try {
-    const result = await postModel.add(req.body.title, req.body.content, req.body.categoryId, req.body.image);
+    const result = await postModel.add(req.body.title, req.body.content, req.body.categoryId, req.body.imageUrl);
     helpers.sendSuccessResponse(res, 'POST_CREATED', result);
   } catch (error) {
     helpers.sendFailedResponse(res, error, 500);

@@ -1,5 +1,6 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const db = require('@lib/database');
+const helpers = require('@lib/helpers');
 
 const TITLE_MIN_LENGTH = 3; // Minimum post title length
 const TITLE_MAX_LENGTH = 254; // Maximum post title length
@@ -34,8 +35,8 @@ const model = db.instance.define('posts', {
       notEmpty: { msg: `Content must not be empty` },
     },
   },
-  image: {
-    // The post image
+  image_url: {
+    // The post image's url
     type: DataTypes.STRING,
     allowNull: true,
   },
@@ -48,9 +49,8 @@ const model = db.instance.define('posts', {
  */
 model.deleteById = async function (postId) {
   try {
-    // Parse ID param
-    const id = Number.parseInt(postId);
-    if (Number.isNaN(id)) throw new Error('INVALID_POST_ID_PARAM');
+    const id = helpers.validateID(postId);
+    if (id === -1) throw new Error('INVALID_POST_ID');
 
     const result = await model.destroy({ where: { id } }); // Number, amount of destroyed entries
 
@@ -79,11 +79,10 @@ model.getAllWithoutContent = async function () {
  * @return {Promise<Array<number>>} Promise that will resolve with an array of numbers (?)
  */
 // TODO: Add image field
-model.updateInfo = async function (postId, title = null, content = null, category_id = null, image = null) {
+model.updateInfo = async function (postId, title = null, content = null, category_id = null, imageUrl = null) {
   try {
-    // Parse post ID param
-    const id = Number.parseInt(postId);
-    if (id == null || id < 0 || Number.isNaN(id)) throw new Error('INVALID_POST_ID');
+    const id = helpers.validateID(postId);
+    if (id === -1) throw new Error('INVALID_POST_ID');
 
     // Build update params object
     const updateParams = {};
@@ -91,13 +90,16 @@ model.updateInfo = async function (postId, title = null, content = null, categor
     if (title) updateParams.title = title;
     if (content) updateParams.content = content;
     if (category_id !== null) {
-      const categoryId = Number.parseInt(category_id);
-      if (Number.isNaN(categoryId)) throw new Error('INVALID_CATEGORY_ID');
+      const categoryId = helpers.validateID(category_id);
+      if (categoryId === -1) throw new Error('INVALID_CATEGORY_ID');
 
       updateParams.categoryId = categoryId;
     }
 
-    // TODO: Add image field param
+    if (imageUrl) {
+      // TODO: Validate image url & update postman
+      updateParams.image_url = imageUrl;
+    }
 
     const result = await model.update(updateParams, { where: { id } }); // Number, amount of destroyed entries
 
@@ -121,19 +123,20 @@ model.updateInfo = async function (postId, title = null, content = null, categor
  * @return {Promise<postModel>} Promise that will resolve with an object of postModel
  */
 // TODO: Add image field
-model.add = async function (title, content, category_id, image) {
+model.add = async function (title, content, category_id, image_url) {
   try {
-    // Parse category ID
-    const categoryId = Number.parseInt(category_id);
-    if (categoryId == null || categoryId < 0 || Number.isNaN(categoryId)) throw new Error('INVALID_CATEGORY_ID');
+    const categoryId = helpers.validateID(category_id);
+    if (categoryId === -1) throw new Error('INVALID_CATEGORY_ID');
 
     // Get title & content
     if (!title) throw new Error('EMPTY_TITLE_NOT_ALLOWED');
     if (!content) throw new Error('EMPTY_CONTENT_NOT_ALLOWED');
 
-    // TODO: Accept image param
+    if (image_url) {
+      // TODO: Validate image url & update psostman
+    }
 
-    const result = await model.create({ title, content, categoryId }); // result: object of postModel
+    const result = await model.create({ title, content, categoryId, image_url }); // result: object of postModel
 
     if (!result) throw new Error('POST_NOT_CREATED');
 
@@ -156,9 +159,8 @@ model.add = async function (title, content, category_id, image) {
  */
 model.getById = async function (postId) {
   try {
-    // Parse ID param
-    const id = Number.parseInt(postId);
-    if (id == null || id < 0 || Number.isNaN(id)) throw new Error('INVALID_POST_ID');
+    const id = helpers.validateID(postId);
+    if (id === -1) throw new Error('INVALID_POST_ID');
 
     const result = await model.findOne({
       where: { id },
