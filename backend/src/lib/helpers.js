@@ -1,0 +1,34 @@
+/**
+ * Helper function to send an error response
+ *
+ * @param {object} res - The express response object
+ * @param {any} message - The error message/identification
+ * @param {number} code - The http status code
+ */
+exports.sendFailedResponse = (res, message, code) => {
+  if (typeof message === 'object') message = message.message;
+
+  return res.status(code).send({
+    error: true,
+    message,
+  });
+};
+
+/**
+ * Helper function to send an success response
+ *
+ * @param {object} res - The express response object
+ * @param {any} message - The success message/identification
+ * @param {any} data - The data object to send back
+ */
+exports.sendSuccessResponse = (res, message, data) => {
+  if (typeof message === 'object') message = message.message;
+
+  return res.status(200).send({
+    error: false,
+    message,
+    data,
+  });
+};
+
+exports.env = process.env.NODE_ENV || 'development';
