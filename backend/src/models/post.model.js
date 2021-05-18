@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
 const db = require('@lib/database');
 
 const TITLE_MIN_LENGTH = 3; // Minimum post title length
@@ -40,5 +40,137 @@ const model = db.instance.define('posts', {
     allowNull: true,
   },
 });
+
+/**
+ * Delete a post by ID
+ * @param {number} postId - The post ID to delete
+ * @return {Promise<number>} Promise that will resolve with the number of deleted entries
+ */
+model.deleteById = async function (postId) {
+  try {
+    // Parse ID param
+    const id = Number.parseInt(postId);
+    if (Number.isNaN(id)) throw new Error('INVALID_POST_ID_PARAM');
+
+    const result = await model.destroy({ where: { id } }); // Number, amount of destroyed entries
+
+    if (!result) throw new Error('POST_NOT_FOUND');
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Get all posts without the content field
+ * @return {Promise<Array<postModel>>} Promise that will resolve with an array of postModel objects, without the content field
+ */
+model.getAllWithoutContent = async function () {
+  return model.findAll({ include: 'category', attributes: { exclude: ['categoryId', 'content'] } });
+};
+
+/**
+ * Update a post by ID
+ * @param {number} id - The post ID to update
+ * @param {string} title - (Optional) The new title
+ * @param {string} content - (Optional) The new content
+ * @param {number} category_id - (Optional) The new category id
+ * @return {Promise<Array<number>>} Promise that will resolve with an array of numbers (?)
+ */
+// TODO: Add image field
+model.updateInfo = async function (postId, title = null, content = null, category_id = null, image = null) {
+  try {
+    // Parse post ID param
+    const id = Number.parseInt(postId);
+    if (id == null || id < 0 || Number.isNaN(id)) throw new Error('INVALID_POST_ID');
+
+    // Build update params object
+    const updateParams = {};
+
+    if (title) updateParams.title = title;
+    if (content) updateParams.content = content;
+    if (category_id !== null) {
+      const categoryId = Number.parseInt(category_id);
+      if (Number.isNaN(categoryId)) throw new Error('INVALID_CATEGORY_ID');
+
+      updateParams.categoryId = categoryId;
+    }
+
+    // TODO: Add image field param
+
+    const result = await model.update(updateParams, { where: { id } }); // Number, amount of destroyed entries
+
+    console.log(result);
+
+    if (!result || result.length === 0 || result[0] === 0) throw new Error('POST_NOT_FOUND');
+
+    return result;
+  } catch (error) {
+    if (error instanceof Sequelize.ForeignKeyConstraintError && error.fields.includes('categoryId'))
+      throw new Error('CATEGORY_NOT_FOUND');
+    throw error;
+  }
+};
+
+/**
+ * Create a new post
+ * @param {string} title - The post title
+ * @param {string} content - The post content
+ * @param {number} category_id - The post category id
+ * @return {Promise<postModel>} Promise that will resolve with an object of postModel
+ */
+// TODO: Add image field
+model.add = async function (title, content, category_id, image) {
+  try {
+    // Parse category ID
+    const categoryId = Number.parseInt(category_id);
+    if (categoryId == null || categoryId < 0 || Number.isNaN(categoryId)) throw new Error('INVALID_CATEGORY_ID');
+
+    // Get title & content
+    if (!title) throw new Error('EMPTY_TITLE_NOT_ALLOWED');
+    if (!content) throw new Error('EMPTY_CONTENT_NOT_ALLOWED');
+
+    // TODO: Accept image param
+
+    const result = await model.create({ title, content, categoryId }); // result: object of postModel
+
+    if (!result) throw new Error('POST_NOT_CREATED');
+
+    // Add our category object manually
+    result.dataValues.category = await result.getCategory();
+    delete result.dataValues.categoryId;
+
+    return result;
+  } catch (error) {
+    if (error instanceof Sequelize.ForeignKeyConstraintError && error.fields.includes('categoryId'))
+      throw new Error('CATEGORY_NOT_FOUND');
+    throw error;
+  }
+};
+
+/**
+ * Get a post by id
+ * @param {number} id - The post id
+ * @return {Promise<postModel>} Promise that will resolve with an object of postModel
+ */
+model.getById = async function (postId) {
+  try {
+    // Parse ID param
+    const id = Number.parseInt(postId);
+    if (id == null || id < 0 || Number.isNaN(id)) throw new Error('INVALID_POST_ID');
+
+    const result = await model.findOne({
+      where: { id },
+      include: 'category',
+      attributes: { exclude: ['categoryId'] },
+    }); // result: object of postModel
+
+    if (!result) throw new Error('POST_NOT_FOUND');
+    else return result;
+  } catch (error) {
+    throw error;
+  }
+};
 
 module.exports = model;

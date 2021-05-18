@@ -14,6 +14,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Configure middlewares
+// TODO: Add rate limiter
 app.set('trust proxy', 1); // Heroku
 app.use(compression());
 app.use(express.urlencoded({ extended: true }));
