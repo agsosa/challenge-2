@@ -1,26 +1,42 @@
 /*
+  Hook+Context provider to manage our API
 
-  TODO: ADD HEADER COMMENT
+  This hook will return an object containing methods and some state:
+
+    const api = useAPI(); then api.posts, api.fetchPosts(), etc
+    or const { posts, fetchPosts, ...etc } = useAPI();
+
+  Available state:
+    posts: array of objects, the posts list
+    loading: boolean, indicating if there is a pending request or not
+
+  Available methods:
+    async fetchPosts()->void: method to fetch the posts and save them on the posts state
+    async getPostDetails(id: number)->object: method to fetch a post's details by id
+    async deletePost(id: number)->boolean: method to delete a post by id, returns true if success and false if failed
+    
+    TODO: Terminar comment
 
 */
 
 // Original idea by ui.dev (https://usehooks.com/useAuth/)
 import * as React from 'react';
-import { API_BASE_URL } from '@lib/config';
+import { API_BASE_URL } from '@lib/Config';
 import axios from 'axios';
 
 const apiContext = React.createContext();
 
 // Provider hook that creates the API object and handles API requests, cache, etc
-function useProvideAuth() {
-  const [loading, setLoading] = React.useState(false);
-  const originalPostsArray = React.useRef(null);
-  const [posts, setPosts] = React.useState([]);
-  const errorListeners = React.useRef([]);
+function useProvideAPI() {
+  const [loading, setLoading] = React.useState(false); // True when a request is pending
+  const [posts, setPosts] = React.useState([]); // Array of objects containing the posts. Call fetchPosts() to refresh
+  const originalPostsArray = React.useRef(null); // Used to save the original array when filtering
+  const errorListeners = React.useRef([]); // Used in our error observer pattern
 
   // TODO: Add retry mechanism?
   // TODO: Add cache mechanism?
 
+  // Get the posts list and store them on the posts state
   const fetchPosts = async () => {
     setLoading(true);
 
@@ -29,8 +45,25 @@ function useProvideAuth() {
 
       if (result.data && Array.isArray(result.data)) {
         setPosts(result.data);
-        return result.data;
       } else throw new Error('INVALID_POST_LIST');
+    } catch (error) {
+      onError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Get post details by id
+  // Returns an object containing the post details
+  const getPostDetails = async (id) => {
+    setLoading(true);
+
+    try {
+      const result = await axios.get(`${API_BASE_URL}/posts/${id}`);
+
+      if (result.data && typeof result.data === 'object') {
+        return result.data;
+      } else throw new Error('INVALID_POST_DETAILS');
     } catch (error) {
       onError(error);
       return [];
@@ -39,12 +72,19 @@ function useProvideAuth() {
     }
   };
 
+  // Delete a post by id
+  // Returns true if the post was successfully deleted, otherwise false
   const deletePost = async (id) => {};
 
+  // Update a post by id
+  // Returns true if the post was successfully updated, otherwise false
   const updatePost = async () => {};
 
+  // Create a post
+  // Returns true if the post was successfully created, otherwise false
   const createPost = async () => {};
 
+  // Filter the posts list state by title (case insensitive)
   const filterPostsByTitle = (title) => {
     if (!title && originalPostsArray.current) {
       setPosts(originalPostsArray.current);
@@ -92,6 +132,7 @@ function useProvideAuth() {
     fetchPosts,
     deletePost,
     updatePost,
+    getPostDetails,
     createPost,
     subscribeToErrorEvents,
     unsubscribeFromErrorEvents,
@@ -101,7 +142,7 @@ function useProvideAuth() {
 
 // Context provider component to make the API object available to any child component that calls useAPI()
 export function APIProvider({ children }) {
-  const API = useProvideAuth();
+  const API = useProvideAPI();
   return <apiContext.Provider value={API}>{children}</apiContext.Provider>;
 }
 
