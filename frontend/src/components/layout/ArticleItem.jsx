@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ title }) {
+export default function ({ title, id }) {
   const classes = useStyles();
   const [menuAnchor, setMenuAnchor] = React.useState(null);
 
@@ -45,12 +45,23 @@ export default function ({ title }) {
     setMenuAnchor(event.currentTarget);
   };
 
-  const handleOptionsClose = () => {
+  const handleOptionsClose = (option) => {
     setMenuAnchor(null);
+
+    switch (option) {
+      case 'editar':
+        break;
+      case 'eliminar':
+        break;
+    }
+  };
+
+  const handlePostTitleClick = () => {
+    // TODO: Open details page with ID
   };
 
   const TitleRender = (
-    <Button className={classes.btnTitle} variant='text'>
+    <Button className={classes.btnTitle} variant='text' onClick={handlePostTitleClick}>
       <Typography variant='h6'>{title}</Typography>
     </Button>
   );
@@ -66,8 +77,8 @@ export default function ({ title }) {
         title={TitleRender}
       />
       <Menu id='simple-menu' anchorEl={menuAnchor} keepMounted open={Boolean(menuAnchor)} onClose={handleOptionsClose}>
-        <MenuItem onClick={handleOptionsClose}>Editar</MenuItem>
-        <MenuItem onClick={handleOptionsClose}>Eliminar</MenuItem>
+        <MenuItem onClick={() => handleOptionsClose('editar')}>Editar</MenuItem>
+        <MenuItem onClick={() => handleOptionsClose('eliminar')}>Eliminar</MenuItem>
       </Menu>
     </Card>
   );
