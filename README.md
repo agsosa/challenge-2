@@ -25,7 +25,6 @@ PORT = 3001
 
 # Frontend
 
-Deployed to 
-
+Deployed to https://akchallenge2front.netlify.app
 
 Alkemy
