@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import HomeIcon from '@material-ui/icons/Home';
 import Logo from '@components/layout/Logo';
 import Search from '@components/layout/Search';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -83,15 +84,23 @@ export default function () {
 
           {/* Navigation Desktop */}
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='inicio' color='inherit'>
-              <HomeIcon />
-            </IconButton>
-            <IconButton aria-label='agregar post' color='inherit'>
-              <AddIcon />
-            </IconButton>
-            <IconButton aria-label='editar post' color='inherit'>
-              <EditIcon />
-            </IconButton>
+            <Tooltip title='Lista de Posts'>
+              <IconButton aria-label='inicio' color='inherit'>
+                <HomeIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title='Crear nuevo post'>
+              <IconButton aria-label='agregar post' color='inherit'>
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title='Editar un post'>
+              <IconButton aria-label='editar post' color='inherit'>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
           </div>
 
           {/* Navigation Mobile */}

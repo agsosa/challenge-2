@@ -9,6 +9,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,18 +62,22 @@ export default function ({ title, id }) {
   };
 
   const TitleRender = (
-    <Button className={classes.btnTitle} variant='text' onClick={handlePostTitleClick}>
-      <Typography variant='h6'>{title}</Typography>
-    </Button>
+    <Tooltip title='Ver post'>
+      <Button className={classes.btnTitle} variant='text' onClick={handlePostTitleClick}>
+        <Typography variant='h6'>{title}</Typography>
+      </Button>
+    </Tooltip>
   );
 
   return (
     <Card className={classes.root}>
       <CardHeader
         action={
-          <IconButton aria-label='settings' onClick={handleOptionsClick}>
-            <MoreVertIcon />
-          </IconButton>
+          <Tooltip title='Opciones para este post'>
+            <IconButton aria-label='settings' onClick={handleOptionsClick}>
+              <MoreVertIcon />
+            </IconButton>
+          </Tooltip>
         }
         title={TitleRender}
       />

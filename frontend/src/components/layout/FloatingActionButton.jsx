@@ -25,12 +25,15 @@ export default function ({ action, ...props }) {
   // TODO
   switch (action) {
     case 'add':
+      <AddIcon />;
       break;
     case 'edit':
       break;
     default:
       <AddIcon />;
   }
+
+  // TODO: Add support for multiple actions
 
   return (
     <Fab color='primary' aria-label='add' className={classes.root} {...props}>
