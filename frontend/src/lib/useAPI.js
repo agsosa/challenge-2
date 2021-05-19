@@ -14,7 +14,8 @@ const apiContext = React.createContext();
 // Provider hook that creates the API object and handles API requests, cache, etc
 function useProvideAuth() {
   const [loading, setLoading] = React.useState(false);
-  const [posts, setPosts] = React.useState(null);
+  const originalPostsArray = React.useRef(null);
+  const [posts, setPosts] = React.useState([]);
   const errorListeners = React.useRef([]);
 
   // TODO: Add retry mechanism?
@@ -43,6 +44,16 @@ function useProvideAuth() {
   const updatePost = async () => {};
 
   const createPost = async () => {};
+
+  const filterPostsByTitle = (title) => {
+    if (!title && originalPostsArray.current) {
+      setPosts(originalPostsArray.current);
+    } else
+      setPosts((old) => {
+        originalPostsArray.current = old;
+        return old.filter((q) => q.title.toLowerCase().includes(title.toLowerCase()));
+      });
+  };
 
   // Start error events (observer pattern)
 
@@ -77,6 +88,7 @@ function useProvideAuth() {
   // Return all the methods/state to make it available to the components using this hook
   return {
     posts,
+    filterPostsByTitle,
     fetchPosts,
     deletePost,
     updatePost,
