@@ -30,6 +30,12 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  logoLink: {
+    display: 'flex',
+    cursor: 'pointer',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 export default function () {
@@ -107,7 +113,7 @@ export default function () {
     <div className={classes.grow}>
       <AppBar position='fixed'>
         <Toolbar>
-          <Logo />
+          <Logo className={classes.logoLink} onClick={handleHomeLink} />
 
           <Search />
 
