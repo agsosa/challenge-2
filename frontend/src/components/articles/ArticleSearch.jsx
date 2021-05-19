@@ -1,3 +1,13 @@
+/* 
+  Smart component to search articles by title
+
+  Usage:
+    <ArticleSearch />
+
+  Props:
+    none
+*/
+
 import * as React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';

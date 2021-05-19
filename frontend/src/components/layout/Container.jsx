@@ -1,3 +1,13 @@
+/* 
+  Responsive & animated container component with max width
+
+  Usage:
+    <Container>{...children}</Container>
+
+  Props:
+    children: node (required) - The children to wrap
+*/
+
 import * as React from 'react';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';

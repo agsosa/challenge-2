@@ -1,3 +1,13 @@
+/* 
+  Classic app bar component by Material UI with some changes
+
+  Usage:
+    <Appbar />
+
+  Props:
+    none
+*/
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -82,9 +92,6 @@ export default function () {
       <MenuItem onClick={handleNewPostLink}>
         <p>Crear Post</p>
       </MenuItem>
-      <MenuItem>
-        <p>Editar Post</p>
-      </MenuItem>
     </Menu>
   );
 
@@ -98,11 +105,6 @@ export default function () {
       <Tooltip title='Crear nuevo post'>
         <IconButton aria-label='agregar post' color='inherit' onClick={handleNewPostLink}>
           <AddIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title='Editar un post'>
-        <IconButton aria-label='editar post' color='inherit'>
-          <EditIcon />
         </IconButton>
       </Tooltip>
     </>

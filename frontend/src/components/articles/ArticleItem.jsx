@@ -1,3 +1,14 @@
+/* 
+  Smart component to display an article on a card with title and edit/delete options
+
+  Usage:
+    <ArticleItem />
+
+  Props:
+    id: number (required) - The article id
+    title: string (required) - The article title
+*/
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -42,6 +53,7 @@ export default function ({ title, id }) {
 
     switch (option) {
       case 'editar':
+        if (id) history.push(`/post/edit/${id}`);
         break;
       case 'eliminar':
         confirm(DialogOptions.getDeletePost(id, title))

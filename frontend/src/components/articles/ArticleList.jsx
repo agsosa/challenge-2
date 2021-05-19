@@ -1,3 +1,15 @@
+/* 
+  Component to display a grid of ArticleItem with pagination
+
+  Usage:
+    <ArticleList />
+
+  Props:
+    articles: object[] (required) - The array of articles
+
+    Each object in the articles array should be of shape { id: number, title: string }
+*/
+
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

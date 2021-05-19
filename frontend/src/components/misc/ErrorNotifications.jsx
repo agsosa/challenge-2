@@ -1,3 +1,13 @@
+/* 
+  API error notification listener to display error notifications
+
+  Usage:
+    <ErrorNotifications />
+
+  Props:
+    none
+*/
+
 import * as React from 'react';
 import { useAPI } from '@lib/useAPI';
 import { toast } from 'react-toastify';

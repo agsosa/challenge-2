@@ -1,3 +1,15 @@
+/* 
+  Floating button component 
+
+  TODO: Unfinished component
+
+  Usage:
+    <FloatingActionButton />
+
+  Props:
+    action: string (optional) - The action to assign a icon, example: "add", "edit"
+*/
+
 import * as React from 'react';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';

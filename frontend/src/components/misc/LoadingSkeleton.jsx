@@ -1,3 +1,10 @@
+/* 
+  Loading "skeleton" indicator
+
+  Usage:
+    <LoadingSkeleton />
+*/
+
 import * as React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/core/styles';

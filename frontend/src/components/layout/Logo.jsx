@@ -1,3 +1,13 @@
+/* 
+  Simple logo component
+  
+  Usage:
+    <Logo />
+
+  Props:
+    none
+*/
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
