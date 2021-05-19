@@ -161,7 +161,7 @@ export default function () {
 
   return (
     <div className={classes.grow}>
-      <AppBar position='static'>
+      <AppBar position='fixed'>
         <Toolbar>
           <BookIcon className={classes.menuButton} />
           <Typography className={classes.title} variant='h6' noWrap>
