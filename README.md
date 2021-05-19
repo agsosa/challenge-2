@@ -27,4 +27,8 @@ PORT = 3001
 
 Deployed to https://akchallenge2front.netlify.app
 
+**Deployment info:**
+- npm install && npm start
+- Extra configuration can be located at /src/lib/Config.js
+
 Alkemy
