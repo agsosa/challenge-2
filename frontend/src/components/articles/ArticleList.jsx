@@ -37,6 +37,9 @@ export default function ({ articles }) {
     setPage(page);
   };
 
+  // Reset page on articles change
+  React.useEffect(() => setPage(1), [articles]);
+
   // TODO: Add loading & empty articles indicator
   /*if (!articles || !Array.isArray(articles)) {
     return 'Loading';
