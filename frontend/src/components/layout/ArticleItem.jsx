@@ -15,6 +15,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,26 +42,43 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: purple[800],
   },
+  btnTitle: {
+    textTransform: 'none',
+  },
 }));
 
 export default function ({ title }) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [menuAnchor, setMenuAnchor] = React.useState(null);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const handleOptionsClick = (event) => {
+    setMenuAnchor(event.currentTarget);
   };
+
+  const handleOptionsClose = () => {
+    setMenuAnchor(null);
+  };
+
+  const TitleRender = (
+    <Button className={classes.btnTitle} variant='text'>
+      <Typography variant='h6'>{title}</Typography>
+    </Button>
+  );
 
   return (
     <Card className={classes.root}>
       <CardHeader
         action={
-          <IconButton aria-label='settings'>
+          <IconButton aria-label='settings' onClick={handleOptionsClick}>
             <MoreVertIcon />
           </IconButton>
         }
-        title={title}
+        title={TitleRender}
       />
+      <Menu id='simple-menu' anchorEl={menuAnchor} keepMounted open={Boolean(menuAnchor)} onClose={handleOptionsClose}>
+        <MenuItem onClick={handleOptionsClose}>Editar</MenuItem>
+        <MenuItem onClick={handleOptionsClose}>Eliminar</MenuItem>
+      </Menu>
     </Card>
   );
 }
