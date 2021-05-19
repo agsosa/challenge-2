@@ -2,6 +2,7 @@ import * as React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
+import { useLocation } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -45,22 +46,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ({ onSearch }) {
   const classes = useStyles();
-
+  const location = useLocation();
   const [text, setText] = React.useState('');
+  const afterTypeWaitTime = 500; // Time (ms) that the component will wait after the user stops typing to call onSearch
 
-  // Only call onSearch after the user stops typing for 1 second
+  // Only call onSearch after the user stops typing
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      if (onSearch && text) onSearch(text);
-    }, 650);
+      if (onSearch) onSearch(text);
+    }, afterTypeWaitTime);
 
     return () => {
       clearTimeout(timer);
     };
   }, [text]);
 
+  // Reset text on route change
+  React.useEffect(() => {
+    setText('');
+  }, [location]);
+
   const handleChange = (event) => {
-    console.log(event.target.value);
     setText(event.target.value);
   };
 
