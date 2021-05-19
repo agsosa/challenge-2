@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 
 import ArticleItem from '@components/articles/ArticleItem';
-import { LIST_POSTS_PER_PAGE } from '@lib/config';
+import { LIST_POSTS_PER_PAGE } from '@lib/Config';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import BookIcon from '@material-ui/icons/Book';
 
-import { APP_NAME } from '@lib/config';
+import { APP_NAME } from '@lib/Config';
 
 const useStyles = makeStyles((theme) => ({
   root: {

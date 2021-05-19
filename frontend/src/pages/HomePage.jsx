@@ -9,15 +9,9 @@ import ArticleList from '@components/articles/ArticleList';
 import Container from '@components/layout/Container';
 import FloatingActionButton from '@components/misc/FloatingActionButton';
 import { useAPI } from '@lib/useAPI';
-
-const useStyles = makeStyles({
-  loadingContainer: {
-    width: '100%',
-  },
-});
+import LoadingSkeleton from '@components/misc/LoadingSkeleton';
 
 export default function () {
-  const classes = useStyles();
   const { posts, fetchPosts, loading } = useAPI();
 
   React.useEffect(() => {
@@ -27,13 +21,7 @@ export default function () {
   return (
     <Container>
       {/* loading skeleton */}
-      {loading && (
-        <div className={classes.loadingContainer}>
-          {Array.from(Array(10).keys()).map(() => (
-            <Skeleton height={50} />
-          ))}
-        </div>
-      )}
+      {loading && <LoadingSkeleton />}
 
       {/* posts list */}
       {!loading && posts && Array.isArray(posts) && posts.length > 0 ? (
