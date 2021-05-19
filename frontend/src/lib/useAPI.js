@@ -109,8 +109,22 @@ function useProvideAPI() {
   const updatePost = async () => {};
 
   // Create a post
-  // Returns true if the post was successfully created, otherwise false
-  const createPost = async () => {};
+  // Returns a post details object if the post was successfully created, otherwise false
+  const createPost = async (title, content) => {
+    setLoading(true);
+
+    try {
+      const result = await axios.post(`${API_BASE_URL}/posts`, { title, body: content });
+      console.log(result);
+      if (result.status === 201 && result.data && result.data.id) return result.data;
+      else return false;
+    } catch (error) {
+      onError(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filter the posts list state by title (case insensitive)
   const filterPostsByTitle = (title) => {

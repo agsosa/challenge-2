@@ -1,33 +1,22 @@
 import * as React from 'react';
-import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 import Container from '@components/layout/Container';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: 75,
-    padding: theme.spacing(3),
-    height: '100%',
-  },
-}));
+import { useAPI } from '@lib/useAPI';
+import LoadingSkeleton from '@components/misc/LoadingSkeleton';
+import ArticleForm from '../components/articles/ArticleForm';
 
 export default function () {
-  const { id } = useParams();
-  const styles = useStyles();
+  const { loading } = useAPI();
 
-  const [articles, setArticles] = React.useState([]);
+  return (
+    <Container>
+      {loading && <LoadingSkeleton />}
 
-  React.useEffect(() => {
-    axios
-      .get('https://jsonplaceholder.typicode.com/posts')
-      .then(({ data }) => {
-        console.log(data);
-        setArticles(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  return <Container>{id}</Container>;
+      {!loading && <ArticleForm />}
+    </Container>
+  );
 }
