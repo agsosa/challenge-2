@@ -1,23 +1,41 @@
 /*
-  Hook+Context provider to manage our API
+  Hook+Context provider to manage our API and handle loading/error states
 
   This hook will return an OBJECT containing methods and some state:
+    const api = useAPI(); // without destructuring 
+    const { posts, fetchPosts, ...etc } = useAPI(); // with destructuring
 
-    const api = useAPI();
-    or const { posts, fetchPosts, ...etc } = useAPI();
+    Only available for components wrapped by <APIProvider></APIProvider>
 
   Available state:
     posts: array of objects, the posts list
-    loading: boolean, indicating if there is a pending request or not
+    loading: boolean, indicating if there is any pending request
+    originalPosts: array of objects, the posts list without filters (if applied)
 
   Available methods:
-    async fetchPosts()->void: method to fetch the posts and save them on the posts state
-    async getPostDetails(id: number)->object: method to fetch a post's details by id
-    async deletePost(id: number)->boolean: method to delete a post by id, returns true if success and false if failed
-    async createPost(title, content)->object: method to create a post, returns the post details object if success and null if failed
+    async fetchPosts()->void
+          method to fetch the posts and save them on the posts state
 
-    TODO: Terminar comment
+    async getPostDetails(id: number)->object
+          method to fetch a post's details by id
 
+    async deletePost(id: number)->boolean
+          method to delete a post by id, returns true if success and false if failed
+
+    async createPost(title: string, content: string)->object 
+          method to create a post, returns the post details object if success or null if failed
+
+    async updatePost(id: number, title: string, content: string)->object
+          method to update a post by id, returns the updated post details object if success or null if failed
+
+    filterPostsByTitle(title: string)->void
+          method to filter the posts list by title (case insensitive), to retrieve the original array use the originalPosts state
+
+    subscribeToErrorEvents(callback: function)->void
+          method to subscribe an error listener
+
+    unsubscribeFromErrorEvents(callback: function)->void
+          method to unsusubscribe an error listener
 */
 
 // Original hook idea by ui.dev (https://usehooks.com/useAuth/)
@@ -105,9 +123,23 @@ function useProvideAPI() {
     }
   };
 
-  // Update a post by id
-  // Returns true if the post was successfully updated, otherwise false
-  const updatePost = async () => {};
+  // Update a post
+  // Returns the updated post details object if the post was successfully updated, otherwise null
+  const updatePost = async (id, title, content) => {
+    setLoading(true);
+
+    try {
+      const result = await axios.put(`${API_BASE_URL}/posts/${id}`, { title, body: content });
+
+      if (result.status === 200 && result.data && result.data.id) return result.data;
+      else return null;
+    } catch (error) {
+      onError(error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Create a post
   // Returns a post details object if the post was successfully created, otherwise null
@@ -116,7 +148,7 @@ function useProvideAPI() {
 
     try {
       const result = await axios.post(`${API_BASE_URL}/posts`, { title, body: content });
-      console.log(result);
+
       if (result.status === 201 && result.data && result.data.id) return result.data;
       else return null;
     } catch (error) {

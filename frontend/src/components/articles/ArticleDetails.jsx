@@ -1,3 +1,15 @@
+/* 
+  A component to display a complete post
+
+  Usage:
+    <ArticleDetails />
+
+  Props:
+    postDetails: object (required) - The article to display
+
+    the postDetails object should be of shape { id: number, title: string, userId: number, body: string }
+*/
+
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -43,6 +55,10 @@ export default function ({ postDetails }) {
       .catch(() => {});
   };
 
+  const handleEditBtn = () => {
+    history.push(`/post/edit/${postDetails.id}`);
+  };
+
   return (
     <div className={classes.root}>
       <Container maxWidth='md'>
@@ -61,7 +77,7 @@ export default function ({ postDetails }) {
         <Button size='small' onClick={handleDeleteBtn}>
           Eliminar
         </Button>
-        <Button size='small' style={{ marginLeft: 10 }}>
+        <Button size='small' style={{ marginLeft: 10 }} onClick={handleEditBtn}>
           Editar
         </Button>
       </Container>

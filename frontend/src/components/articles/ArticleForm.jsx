@@ -1,3 +1,16 @@
+/* 
+  A form to edit or create new articles with basic input validation
+
+  Usage:
+    <ArticleForm />
+
+  Props:
+    editMode: boolean (optional) - To indicate if the form will be used to edit an existing article or not
+    postDetails: object (required if editMode = true, otherwise optional) - The post to edit
+    onSubmit: function(title: string, content: string) - Function to be called on submit click
+    resetOnSubmit = true: boolean (optional) - To indicate if the form should reset on submit
+*/
+
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -5,8 +18,6 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
-
-import { useAPI } from '@lib/useAPI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,14 +49,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ postDetails }) {
+export default function ({ editMode, postDetails, onSubmit, resetOnSubmit = true }) {
   const classes = useStyles();
-  const { createPost } = useAPI();
 
-  const [title, setTitle] = React.useState('');
+  const [title, setTitle] = React.useState(editMode ? postDetails.title : '');
   const [titleError, setTitleError] = React.useState(false);
-  const [content, setContent] = React.useState('');
+  const [content, setContent] = React.useState(editMode ? postDetails.body : '');
   const [contentError, setContentError] = React.useState(false);
+
+  React.useEffect(() => {
+    if (editMode && postDetails) {
+      setTitle(postDetails.title);
+      setContent(postDetails.body);
+    }
+  }, [postDetails]);
 
   // Reset title input error highlight on title change
   React.useEffect(() => {
@@ -57,15 +74,19 @@ export default function ({ postDetails }) {
     setContentError(false);
   }, [content]);
 
+  // On content input change
   const handleContentChange = (event) => setContent(event.target.value);
 
+  // On title input change
   const handleTitleChange = (event) => setTitle(event.target.value);
 
+  // On reset btn click
   const handleResetBtn = () => {
     setTitle('');
     setContent('');
   };
 
+  // On submit btn click
   const handleSubmitBtn = () => {
     let validationError = false;
 
@@ -81,12 +102,8 @@ export default function ({ postDetails }) {
 
     if (validationError) toast.error('Por favor rellena los campos requeridos');
     else {
-      createPost(title, content).then((result) => {
-        if (result) {
-          toast.success(`Se ha creado el post #${result.id} exitosamente.`);
-          handleResetBtn();
-        } else toast.error('No se ha podido crear el post.');
-      });
+      if (onSubmit) onSubmit(title, content);
+      if (resetOnSubmit) handleResetBtn();
     }
   };
 
@@ -94,8 +111,15 @@ export default function ({ postDetails }) {
     <div className={classes.root}>
       <Container maxWidth='md'>
         <Typography className={classes.text} variant='h3'>
-          Crear nuevo post
+          {editMode ? 'Editar Post' : 'Crear nuevo post'}
         </Typography>
+
+        {editMode && (
+          <Typography className={classes.text} variant='caption' className={classes.subtitle}>
+            Post #{postDetails.id} | Published by user #{postDetails.userId}
+          </Typography>
+        )}
+
         <form className={classes.formContainer} noValidate autoComplete='off'>
           <TextField
             required
@@ -125,8 +149,13 @@ export default function ({ postDetails }) {
         <Button variant='outlined' style={{ marginLeft: 10 }} onClick={handleResetBtn}>
           Reiniciar
         </Button>
-        <Button variant='contained' color='primary' style={{ marginLeft: 10 }} onClick={handleSubmitBtn}>
-          Crear Post
+        <Button
+          variant='contained'
+          disabled={editMode && title === postDetails.title && content === postDetails.body}
+          color='primary'
+          style={{ marginLeft: 10 }}
+          onClick={handleSubmitBtn}>
+          {editMode ? 'Editar Post' : 'Crear Post'}
         </Button>
       </Container>
     </div>
