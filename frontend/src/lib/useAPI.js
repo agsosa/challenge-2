@@ -29,8 +29,8 @@ const apiContext = React.createContext();
 // Provider hook that creates the API object and handles API requests, cache, etc
 function useProvideAPI() {
   const [loading, setLoading] = React.useState(false); // True when a request is pending
-  const [posts, setPosts] = React.useState([]); // Array of objects containing the posts. Call fetchPosts() to refresh
-  const originalPostsArray = React.useRef(null); // Used to save the original array when filtering
+  const [posts, setPosts] = React.useState([]); // Array of objects containing the posts. Call fetchPosts() to refresh. Can contain filters.
+  const [originalPosts, setOriginalPosts] = React.useState(null); // Used to save the original array when filtering
   const errorListeners = React.useRef([]); // Used in our error observer pattern
 
   // TODO: Add retry mechanism?
@@ -45,6 +45,7 @@ function useProvideAPI() {
 
       if (result.data && Array.isArray(result.data)) {
         setPosts(result.data);
+        setOriginalPosts(result.data);
       } else throw new Error('INVALID_POST_LIST');
     } catch (error) {
       onError(error);
@@ -74,7 +75,32 @@ function useProvideAPI() {
 
   // Delete a post by id
   // Returns true if the post was successfully deleted, otherwise false
-  const deletePost = async (id) => {};
+  const deletePost = async (id) => {
+    setLoading(true);
+
+    try {
+      const result = await axios.delete(`${API_BASE_URL}/posts/${id}`);
+
+      if (result.status === 200) {
+        // Remove post from the original posts array (used by the filter functions)
+        setOriginalPosts((old) => {
+          return old.filter((q) => q.id !== id);
+        });
+
+        // Remove post from the current posts state
+        setPosts((old) => {
+          return old.filter((q) => q.id !== id);
+        });
+
+        return true;
+      } else return false;
+    } catch (error) {
+      onError(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Update a post by id
   // Returns true if the post was successfully updated, otherwise false
@@ -86,11 +112,10 @@ function useProvideAPI() {
 
   // Filter the posts list state by title (case insensitive)
   const filterPostsByTitle = (title) => {
-    if (!title && originalPostsArray.current) {
-      setPosts(originalPostsArray.current);
+    if (!title && originalPosts) {
+      setPosts(originalPosts);
     } else
       setPosts((old) => {
-        originalPostsArray.current = old;
         return old.filter((q) => q.title.toLowerCase().includes(title.toLowerCase()));
       });
   };
@@ -118,16 +143,17 @@ function useProvideAPI() {
   // Unsubscribe a callback from the error events
   const unsubscribeFromErrorEvents = (listener) => {
     if (listener && typeof listener === 'function') {
-      const index = array.indexOf(listener);
+      const index = errorListeners.current.indexOf(listener);
       if (index > -1) {
-        array.splice(index, 1);
+        errorListeners.current.splice(index, 1);
       }
     } else console.error('useAPI received an invalid error listener. Error listeners should be a function!');
   };
 
   // Return all the methods/state to make it available to the components using this hook
   return {
-    posts,
+    posts, // Can contain filters
+    originalPosts, // The original posts array without filters
     filterPostsByTitle,
     fetchPosts,
     deletePost,

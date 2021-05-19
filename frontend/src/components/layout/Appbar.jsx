@@ -13,8 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { useHistory } from 'react-router';
 
 import Logo from '@components/layout/Logo';
-import Search from '@components/misc/Search';
-import { useAPI } from '@lib/useAPI';
+import Search from '@components/articles/ArticleSearch';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -41,15 +40,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function () {
-  const { filterPostsByTitle } = useAPI();
   const history = useHistory();
   const classes = useStyles();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleSearch = (text) => {
-    filterPostsByTitle(text);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -120,7 +114,7 @@ export default function () {
         <Toolbar>
           <Logo className={classes.logoLink} onClick={handleHomeLink} />
 
-          <Search onSearch={handleSearch} />
+          <Search />
 
           <div className={classes.grow} />
 

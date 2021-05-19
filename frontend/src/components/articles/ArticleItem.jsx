@@ -13,6 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { useHistory } from 'react-router';
 import { useConfirm } from 'material-ui-confirm';
 import { toast } from 'react-toastify';
+import { useAPI } from '@lib/useAPI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ({ title, id }) {
+  const { deletePost } = useAPI();
   const confirm = useConfirm();
   const history = useHistory();
   const classes = useStyles();
@@ -65,8 +67,10 @@ export default function ({ title, id }) {
           cancellationText: 'Cancelar',
         })
           .then(() => {
-            toast.success('Hecho');
-            /* ... */
+            deletePost(id).then((result) => {
+              if (result) toast.success(`Se ha eliminado el post #${id} exitosamente.`);
+              else toast.error('No se ha podido eliminar el post.');
+            });
           })
           .catch(() => {});
         break;
