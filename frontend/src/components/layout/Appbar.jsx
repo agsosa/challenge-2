@@ -12,6 +12,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import Logo from '@components/layout/Logo';
 import Search from '@components/layout/Search';
 import Tooltip from '@material-ui/core/Tooltip';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -32,15 +33,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function () {
+  const history = useHistory();
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [_, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -50,8 +48,21 @@ export default function () {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  // On new post nav link click
+  const handleNewPostLink = () => {
+    history.push('/post/new');
+    handleMobileMenuClose();
+  };
+
+  // On home nav link click
+  const handleHomeLink = () => {
+    history.push('/');
+    handleMobileMenuClose();
+  };
+
   const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
+
+  const mobileLinks = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -60,16 +71,36 @@ export default function () {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}>
-      <MenuItem>
+      <MenuItem onClick={handleHomeLink}>
         <p>Ir a inicio</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleNewPostLink}>
         <p>Crear Post</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem>
         <p>Editar Post</p>
       </MenuItem>
     </Menu>
+  );
+
+  const desktopLinks = (
+    <>
+      <Tooltip title='Lista de Posts'>
+        <IconButton aria-label='inicio' color='inherit' onClick={handleHomeLink}>
+          <HomeIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Crear nuevo post'>
+        <IconButton aria-label='agregar post' color='inherit' onClick={handleNewPostLink}>
+          <AddIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title='Editar un post'>
+        <IconButton aria-label='editar post' color='inherit'>
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
+    </>
   );
 
   return (
@@ -83,28 +114,11 @@ export default function () {
           <div className={classes.grow} />
 
           {/* Navigation Desktop */}
-          <div className={classes.sectionDesktop}>
-            <Tooltip title='Lista de Posts'>
-              <IconButton aria-label='inicio' color='inherit'>
-                <HomeIcon />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title='Crear nuevo post'>
-              <IconButton aria-label='agregar post' color='inherit'>
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title='Editar un post'>
-              <IconButton aria-label='editar post' color='inherit'>
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <div className={classes.sectionDesktop}>{desktopLinks}</div>
 
           {/* Navigation Mobile */}
           <div className={classes.sectionMobile}>
+            {/* Open menu button */}
             <IconButton
               aria-label='show more'
               aria-controls={mobileMenuId}
@@ -117,7 +131,7 @@ export default function () {
         </Toolbar>
       </AppBar>
 
-      {renderMobileMenu}
+      {mobileLinks}
     </div>
   );
 }
