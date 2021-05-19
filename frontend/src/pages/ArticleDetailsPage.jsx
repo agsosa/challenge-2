@@ -39,12 +39,15 @@ export default function () {
       {loading && <LoadingSkeleton />}
 
       {/* posts details */}
-      {!loading && postDetails && typeof postDetails === 'object' ? (
+      {!loading && postDetails && typeof postDetails === 'object' && postDetails.id != null ? (
         <ArticleDetails postDetails={postDetails} />
       ) : (
         !loading && (
           <Box justifyContent='center' alignItems='center' textAlign='center' display='flex' flexDirection='column'>
-            <Typography>Parece que no se ha podido cargar los detalles de este post</Typography>
+            <Typography>
+              Parece que no se ha podido cargar los detalles de este post. ¿Estás seguro/a de que existe un post con el
+              ID #{id}?
+            </Typography>
             <br />
             <Button variant='contained' size='small' color='primary' onClick={fetchPostDetails}>
               Reintentar
