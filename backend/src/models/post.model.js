@@ -12,7 +12,7 @@ const TITLE_MAX_LENGTH = 254; // Maximum post title length
    - id (primary key)
    - createdAt (creation date)
    - updatedAt (modified date)
-   - relations (foreign keys) fields are added automatically by sequelize
+   - relations i.e. categoryId (foreign keys) fields are added automatically by sequelize
 */
 const model = db.instance.define('posts', {
   title: {
@@ -76,10 +76,11 @@ model.getAllWithoutContent = async function () {
 
 /**
  * Update a post by ID
- * @param {number} id - The post ID to update
+ * @param {number} postId - The post ID to update
  * @param {string} title - (Optional) The new title
  * @param {string} content - (Optional) The new content
  * @param {number} category_id - (Optional) The new category id
+ * @param {string} imageUrl - (Optional) The new image url
  * @return {Promise<Array<number>>} Promise that will resolve with an array of numbers (?)
  */
 // TODO: Add image field
@@ -121,9 +122,9 @@ model.updateInfo = async function (postId, title = null, content = null, categor
  * @param {string} title - The post title
  * @param {string} content - The post content
  * @param {number} category_id - The post category id
+ * @param {string} image_url - (Optional) The post image url
  * @return {Promise<postModel>} Promise that will resolve with an object of postModel
  */
-// TODO: Add image field
 model.add = async function (title, content, category_id, image_url) {
   try {
     const categoryId = helpers.validateID(category_id);
@@ -155,7 +156,7 @@ model.add = async function (title, content, category_id, image_url) {
 
 /**
  * Get a post by id
- * @param {number} id - The post id
+ * @param {number} postId - The post id
  * @return {Promise<postModel>} Promise that will resolve with an object of postModel
  */
 model.getById = async function (postId) {

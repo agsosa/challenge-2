@@ -6,10 +6,7 @@ const helpers = require('@lib/helpers');
    Model definition
 
    NOTE: 
-   - id (primary key)
-   - createdAt (creation date)
-   - updatedAt (modified date)
-   - relations (foreign keys) fields are added automatically by sequelize
+   - id (primary key) is added automatically by sequelize
 */
 const model = db.instance.define(
   'categories',
@@ -52,7 +49,7 @@ model.add = async function (locale_es, locale_en) {
 
 /**
  * Delete a category by ID
- * @param {number} id - The category ID to delete
+ * @param {number} categoryId - The category ID to delete
  * @return {Promise<number>} Promise that will resolve with the number of deleted entries
  */
 model.deleteById = async function (categoryId) {

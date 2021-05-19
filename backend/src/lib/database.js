@@ -27,9 +27,11 @@ exports.initialize = async () => {
       const categoryModel = require('@models/category.model');
 
       try {
+        // Check if we already have categories in our categories table
         const categories = await categoryModel.findAll({ limit: 1 });
 
         if (!categories || categories.length === 0) {
+          // Add test categories if we don't have any category yet
           const promises = [];
 
           console.log('[DB] Creating test categories');
