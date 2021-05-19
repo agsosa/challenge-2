@@ -24,6 +24,7 @@ PORT = 3001
 - npm install && npm start
 
 # Frontend
+React.js + Material UI
 
 Deployed to https://akchallenge2front.netlify.app
 
