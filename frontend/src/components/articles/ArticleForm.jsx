@@ -1,23 +1,13 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Pagination from '@material-ui/lab/Pagination';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import { useConfirm } from 'material-ui-confirm';
-import { useHistory } from 'react-router';
 import TextField from '@material-ui/core/TextField';
-
-import ArticleItem from '@components/articles/ArticleItem';
-import { LIST_POSTS_PER_PAGE } from '@lib/Config';
-import { DialogOptions } from '@lib/Helpers';
-import { useAPI } from '@lib/useAPI';
 import { toast } from 'react-toastify';
 
-/*MuiFormHelperText-root MuiFormHelperText-contained Mui-error Mui-required
+import { useAPI } from '@lib/useAPI';
 
-*/
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -33,15 +23,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  paper: {
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(4),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  pagination: {
-    marginTop: theme.spacing(5),
   },
   subtitle: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
   text: {
@@ -60,14 +41,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ({ postDetails }) {
   const classes = useStyles();
   const { createPost } = useAPI();
+
   const [title, setTitle] = React.useState('');
   const [titleError, setTitleError] = React.useState(false);
-
   const [content, setContent] = React.useState('');
   const [contentError, setContentError] = React.useState(false);
-
-  const confirm = useConfirm();
-  const history = useHistory();
 
   // Reset title input error highlight on title change
   React.useEffect(() => {

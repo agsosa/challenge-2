@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ({ loading }) {
+export default function () {
   const classes = useStyles();
 
   return (

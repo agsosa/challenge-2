@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { purple } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,23 +20,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     textAlign: 'center',
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: purple[800],
   },
   btnTitle: {
     textTransform: 'none',
@@ -85,8 +67,6 @@ export default function ({ title, id }) {
       </Button>
     </Tooltip>
   );
-
-  const SubtitleRenderer = <Typography>as</Typography>;
 
   return (
     <Card className={classes.root}>

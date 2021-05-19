@@ -14,12 +14,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  paper: {
-    padding: theme.spacing(2),
-    paddingTop: theme.spacing(4),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
   pagination: {
     marginTop: theme.spacing(5),
   },

@@ -1,9 +1,9 @@
 /*
   Hook+Context provider to manage our API
 
-  This hook will return an object containing methods and some state:
+  This hook will return an OBJECT containing methods and some state:
 
-    const api = useAPI(); then api.posts, api.fetchPosts(), etc
+    const api = useAPI();
     or const { posts, fetchPosts, ...etc } = useAPI();
 
   Available state:
@@ -14,12 +14,13 @@
     async fetchPosts()->void: method to fetch the posts and save them on the posts state
     async getPostDetails(id: number)->object: method to fetch a post's details by id
     async deletePost(id: number)->boolean: method to delete a post by id, returns true if success and false if failed
-    
+    async createPost(title, content)->object: method to create a post, returns the post details object if success and null if failed
+
     TODO: Terminar comment
 
 */
 
-// Original idea by ui.dev (https://usehooks.com/useAuth/)
+// Original hook idea by ui.dev (https://usehooks.com/useAuth/)
 import * as React from 'react';
 import { API_BASE_URL } from '@lib/Config';
 import axios from 'axios';
@@ -109,7 +110,7 @@ function useProvideAPI() {
   const updatePost = async () => {};
 
   // Create a post
-  // Returns a post details object if the post was successfully created, otherwise false
+  // Returns a post details object if the post was successfully created, otherwise null
   const createPost = async (title, content) => {
     setLoading(true);
 
@@ -117,10 +118,10 @@ function useProvideAPI() {
       const result = await axios.post(`${API_BASE_URL}/posts`, { title, body: content });
       console.log(result);
       if (result.status === 201 && result.data && result.data.id) return result.data;
-      else return false;
+      else return null;
     } catch (error) {
       onError(error);
-      return false;
+      return null;
     } finally {
       setLoading(false);
     }
