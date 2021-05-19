@@ -24,8 +24,12 @@ PORT = 3001
 - npm install && npm start
 
 # Frontend
+React.js + Material UI
 
-Deployed to 
+Deployed to https://akchallenge2front.netlify.app
 
+**Deployment info:**
+- npm install && npm start
+- Extra configuration can be located at /src/lib/Config.js
 
 Alkemy
