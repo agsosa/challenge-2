@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Appbar from '@components/layout/Appbar';
 import HomePage from '@pages/HomePage';
-import ArticleDetailsPage from '@pages/ArticleDetailsPage';
+import ViewArticlePage from '@pages/ViewArticlePage';
+import CreateArticlePage from '@pages/CreateArticlePage';
 import ErrorNotifications from '@components/misc/ErrorNotifications';
 
 export default function () {
@@ -12,9 +13,11 @@ export default function () {
       <Appbar />
       <Switch>
         <Route path='/post/edit/:id'></Route>
-        <Route path='/post/new'></Route>
+        <Route path='/post/new'>
+          <CreateArticlePage />
+        </Route>
         <Route path='/post/:id'>
-          <ArticleDetailsPage />
+          <ViewArticlePage />
         </Route>
         <Route path='/'>
           <HomePage />

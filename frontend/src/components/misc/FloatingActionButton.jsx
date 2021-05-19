@@ -22,7 +22,7 @@ export default function ({ action, ...props }) {
   const classes = useStyle();
   let icon = <AddIcon />;
 
-  // TODO
+  // TODO: Add support for multiple actions
   switch (action) {
     case 'add':
       <AddIcon />;
@@ -32,8 +32,6 @@ export default function ({ action, ...props }) {
     default:
       <AddIcon />;
   }
-
-  // TODO: Add support for multiple actions
 
   return (
     <Fab color='primary' aria-label='add' className={classes.root} {...props}>
