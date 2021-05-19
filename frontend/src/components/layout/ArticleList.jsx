@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ArticleItem from '@components/layout/ArticleItem';
 import Pagination from '@material-ui/lab/Pagination';
-import { HOME_POSTS_PER_PAGE } from '@lib/config';
+import { LIST_POSTS_PER_PAGE } from '@lib/config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +28,7 @@ export default function ({ articles }) {
   const classes = useStyles();
 
   const [page, setPage] = React.useState(1);
-  const limit = HOME_POSTS_PER_PAGE; // Limite de posts por pagina
+  const limit = LIST_POSTS_PER_PAGE; // Limite de posts por pagina
   const maxPages = articles && articles.length && limit ? Math.ceil(articles.length / limit) : 1;
 
   const handlePageChange = (event, page) => {
