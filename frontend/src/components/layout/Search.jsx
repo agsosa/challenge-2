@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -43,8 +43,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function () {
+export default function ({ onSearch }) {
   const classes = useStyles();
+
+  const [text, setText] = React.useState('');
+
+  // Only call onSearch after the user stops typing for 1 second
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (onSearch && text) onSearch(text);
+    }, 650);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [text]);
+
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    setText(event.target.value);
+  };
 
   return (
     <div className={classes.search}>
@@ -52,6 +70,8 @@ export default function () {
         <SearchIcon />
       </div>
       <InputBase
+        value={text}
+        onChange={handleChange}
         placeholder='Buscar...'
         classes={{
           root: classes.inputRoot,
