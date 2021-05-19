@@ -2,6 +2,7 @@ import * as React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import { useHistory } from 'react-router';
 
 import ArticleList from '@components/articles/ArticleList';
 import Container from '@components/layout/Container';
@@ -11,6 +12,7 @@ import LoadingSkeleton from '@components/misc/LoadingSkeleton';
 
 export default function () {
   const { posts, fetchPosts, originalPosts, loading } = useAPI();
+  const history = useHistory();
 
   const canShowPostsList = !loading && posts && Array.isArray(posts) && posts.length > 0;
   const postsNotLoaded = !loading && !posts;
@@ -19,6 +21,10 @@ export default function () {
   React.useEffect(() => {
     fetchPosts();
   }, []);
+
+  const handleFloatingBtnClick = () => {
+    history.push('/post/new');
+  };
 
   return (
     <Container>
@@ -37,11 +43,11 @@ export default function () {
           </Button>
         </Box>
       ) : emptyPosts ? (
-        'No se ha encontrado ningún post'
+        <Typography>No se ha encontrado ningún post</Typography>
       ) : null}
 
       {/* floating button */}
-      <FloatingActionButton action='add' />
+      <FloatingActionButton action='add' onClick={handleFloatingBtnClick} />
     </Container>
   );
 }

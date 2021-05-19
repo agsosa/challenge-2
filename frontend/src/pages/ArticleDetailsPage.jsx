@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -45,9 +45,6 @@ export default function () {
           </Box>
         )
       )}
-
-      {/* floating button */}
-      <FloatingActionButton action='add' />
     </Container>
   );
 }
