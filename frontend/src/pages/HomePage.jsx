@@ -1,9 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
-import ArticleList from '@components/layout/ArticlesList';
+import ArticleList from '@components/layout/ArticleList';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import { MenuItem } from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {
