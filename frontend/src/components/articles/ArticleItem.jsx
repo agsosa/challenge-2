@@ -11,6 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useHistory } from 'react-router';
+import { useConfirm } from 'material-ui-confirm';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ({ title, id }) {
+  const confirm = useConfirm();
   const history = useHistory();
   const classes = useStyles();
   const [menuAnchor, setMenuAnchor] = React.useState(null);
@@ -55,6 +58,17 @@ export default function ({ title, id }) {
       case 'editar':
         break;
       case 'eliminar':
+        confirm({
+          description: `Por favor confirma la eliminación del post titulado "${title}"`,
+          title: `Eliminar Post #${id}`,
+          confirmationText: 'Eliminar',
+          cancellationText: 'Cancelar',
+        })
+          .then(() => {
+            toast.success('Hecho');
+            /* ... */
+          })
+          .catch(() => {});
         break;
     }
   };
@@ -64,12 +78,14 @@ export default function ({ title, id }) {
   };
 
   const TitleRender = (
-    <Tooltip title='Ver post'>
+    <Tooltip title={`Ver Post #${id}`}>
       <Button className={classes.btnTitle} variant='text' onClick={handlePostTitleClick}>
         <Typography variant='h6'>{title}</Typography>
       </Button>
     </Tooltip>
   );
+
+  const SubtitleRenderer = <Typography>as</Typography>;
 
   return (
     <Card className={classes.root}>

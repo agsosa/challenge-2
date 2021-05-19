@@ -44,7 +44,6 @@ export default function () {
   const { filterPostsByTitle } = useAPI();
   const history = useHistory();
   const classes = useStyles();
-  const [_, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 

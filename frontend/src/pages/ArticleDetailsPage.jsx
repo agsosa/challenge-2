@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -11,17 +10,8 @@ import { useAPI } from '@lib/useAPI';
 import LoadingSkeleton from '@components/misc/LoadingSkeleton';
 import ArticleDetails from '@components/articles/ArticleDetails';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: 75,
-    padding: theme.spacing(3),
-    height: '100%',
-  },
-}));
-
 export default function () {
   const { id } = useParams();
-  const styles = useStyles();
   const { loading, getPostDetails } = useAPI();
   const [postDetails, setPostDetails] = React.useState(null);
 
