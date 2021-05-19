@@ -112,12 +112,11 @@ function useProvideAPI() {
 
   // Filter the posts list state by title (case insensitive)
   const filterPostsByTitle = (title) => {
-    if (!title && originalPosts) {
-      setPosts(originalPosts);
-    } else
-      setPosts((old) => {
-        return old.filter((q) => q.title.toLowerCase().includes(title.toLowerCase()));
-      });
+    if (originalPosts) {
+      if (!title) {
+        setPosts(originalPosts);
+      } else setPosts(originalPosts.filter((q) => q.title.toLowerCase().includes(title.toLowerCase())));
+    }
   };
 
   // Start error events (observer pattern)

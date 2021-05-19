@@ -40,11 +40,6 @@ export default function ({ articles }) {
   // Reset page on articles change
   React.useEffect(() => setPage(1), [articles]);
 
-  // TODO: Add loading & empty articles indicator
-  /*if (!articles || !Array.isArray(articles)) {
-    return 'Loading';
-  }*/
-
   return (
     <div className={classes.root}>
       <Grid style={{ overflow: 'hidden' }} container spacing={3} justify='center'>
@@ -54,7 +49,6 @@ export default function ({ articles }) {
           </Grid>
         ))}
       </Grid>
-
       <Pagination
         className={classes.pagination}
         page={page}

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -12,7 +10,11 @@ import { useAPI } from '@lib/useAPI';
 import LoadingSkeleton from '@components/misc/LoadingSkeleton';
 
 export default function () {
-  const { posts, fetchPosts, loading } = useAPI();
+  const { posts, fetchPosts, originalPosts, loading } = useAPI();
+
+  const canShowPostsList = !loading && posts && Array.isArray(posts) && posts.length > 0;
+  const postsNotLoaded = !loading && !posts;
+  const emptyPosts = !loading && originalPosts;
 
   React.useEffect(() => {
     fetchPosts();
@@ -24,19 +26,19 @@ export default function () {
       {loading && <LoadingSkeleton />}
 
       {/* posts list */}
-      {!loading && posts && Array.isArray(posts) && posts.length > 0 ? (
+      {canShowPostsList ? (
         <ArticleList articles={posts} />
-      ) : (
-        !loading && (
-          <Box justifyContent='center' alignItems='center' textAlign='center' display='flex' flexDirection='column'>
-            <Typography>Parece que no se ha cargado ningún post</Typography>
-            <br />
-            <Button variant='contained' size='small' color='primary' onClick={fetchPosts}>
-              Reintentar
-            </Button>
-          </Box>
-        )
-      )}
+      ) : postsNotLoaded ? (
+        <Box justifyContent='center' alignItems='center' textAlign='center' display='flex' flexDirection='column'>
+          <Typography>Parece que no se ha cargado ningún post</Typography>
+          <br />
+          <Button variant='contained' size='small' color='primary' onClick={fetchPosts}>
+            Reintentar
+          </Button>
+        </Box>
+      ) : emptyPosts ? (
+        'No se ha encontrado ningún post'
+      ) : null}
 
       {/* floating button */}
       <FloatingActionButton action='add' />
