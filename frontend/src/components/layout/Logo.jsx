@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import BookIcon from '@material-ui/icons/Book';
+import { APP_NAME } from '@lib/config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +26,7 @@ export default function () {
     <div className={classes.root}>
       <BookIcon className={classes.icon} />
       <Typography className={classes.title} variant='h6' noWrap>
-        Simple blog
+        {APP_NAME}
       </Typography>
     </div>
   );
