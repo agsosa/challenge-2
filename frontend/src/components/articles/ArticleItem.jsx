@@ -13,7 +13,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { useHistory } from 'react-router';
 import { useConfirm } from 'material-ui-confirm';
 import { toast } from 'react-toastify';
+
 import { useAPI } from '@lib/useAPI';
+import { DialogOptions } from '@lib/Helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,12 +62,7 @@ export default function ({ title, id }) {
       case 'editar':
         break;
       case 'eliminar':
-        confirm({
-          description: `Por favor confirma la eliminación del post titulado "${title}"`,
-          title: `Eliminar Post #${id}`,
-          confirmationText: 'Eliminar',
-          cancellationText: 'Cancelar',
-        })
+        confirm(DialogOptions.getDeletePost(id, title))
           .then(() => {
             deletePost(id).then((result) => {
               if (result) toast.success(`Se ha eliminado el post #${id} exitosamente.`);

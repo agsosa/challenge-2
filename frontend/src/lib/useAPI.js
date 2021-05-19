@@ -83,14 +83,16 @@ function useProvideAPI() {
 
       if (result.status === 200) {
         // Remove post from the original posts array (used by the filter functions)
-        setOriginalPosts((old) => {
-          return old.filter((q) => q.id !== id);
-        });
+        if (originalPosts)
+          setOriginalPosts((old) => {
+            return old.filter((q) => q.id !== id);
+          });
 
         // Remove post from the current posts state
-        setPosts((old) => {
-          return old.filter((q) => q.id !== id);
-        });
+        if (posts)
+          setPosts((old) => {
+            return old.filter((q) => q.id !== id);
+          });
 
         return true;
       } else return false;
