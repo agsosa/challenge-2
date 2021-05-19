@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import ArticleItem from '@components/layout/ArticleItem';
 import Pagination from '@material-ui/lab/Pagination';
+
+import ArticleItem from '@components/articles/ArticleItem';
 import { LIST_POSTS_PER_PAGE } from '@lib/config';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,7 +47,7 @@ export default function ({ articles }) {
       <Grid style={{ overflow: 'hidden' }} container spacing={3} justify='center'>
         {articles.slice((page - 1) * limit, page * limit).map((q, i) => (
           <Grid key={q.id} item xs='auto'>
-            <ArticleItem title={q.title} />
+            <ArticleItem title={q.title} id={q.id} />
           </Grid>
         ))}
       </Grid>

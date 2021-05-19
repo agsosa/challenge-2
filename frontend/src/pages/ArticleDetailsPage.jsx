@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Container from '@components/layout/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router';
+
+import Container from '@components/layout/Container';
 
 const useStyles = makeStyles((theme) => ({
   root: {

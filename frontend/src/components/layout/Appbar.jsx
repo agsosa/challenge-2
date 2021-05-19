@@ -9,10 +9,11 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import HomeIcon from '@material-ui/icons/Home';
-import Logo from '@components/layout/Logo';
-import Search from '@components/layout/Search';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useHistory } from 'react-router';
+
+import Logo from '@components/layout/Logo';
+import Search from '@components/misc/Search';
 
 const useStyles = makeStyles((theme) => ({
   grow: {

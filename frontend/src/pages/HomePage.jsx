@@ -1,13 +1,14 @@
 import * as React from 'react';
-import ArticleList from '@components/layout/ArticleList';
-import Container from '@components/layout/Container';
-import FloatingActionButton from '@components/layout/FloatingActionButton';
-import { useAPI } from '@lib/useAPI';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+
+import ArticleList from '@components/articles/ArticleList';
+import Container from '@components/layout/Container';
+import FloatingActionButton from '@components/misc/FloatingActionButton';
+import { useAPI } from '@lib/useAPI';
 
 const useStyles = makeStyles({
   loadingContainer: {

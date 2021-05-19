@@ -1,7 +1,7 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { APIProvider } from './lib/useAPI';
+import { APIProvider } from '@lib/useAPI';
 import Router from './Router';
 
 ReactDOM.render(

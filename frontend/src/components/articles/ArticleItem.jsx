@@ -10,6 +10,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ({ title, id }) {
+  const history = useHistory();
   const classes = useStyles();
   const [menuAnchor, setMenuAnchor] = React.useState(null);
 
@@ -58,7 +60,7 @@ export default function ({ title, id }) {
   };
 
   const handlePostTitleClick = () => {
-    // TODO: Open details page with ID
+    if (id) history.push(`/post/${id}`);
   };
 
   const TitleRender = (
