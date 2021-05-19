@@ -1,6 +1,5 @@
 import * as React from 'react';
-import axios from 'axios';
-import Container from '@material-ui/core/Container';
+import Container from '@components/layout/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router';
 
@@ -16,21 +15,5 @@ export default function () {
   const { id } = useParams();
   const styles = useStyles();
 
-  const [articles, setArticles] = React.useState([]);
-
-  React.useEffect(() => {
-    axios
-      .get('https://jsonplaceholder.typicode.com/posts')
-      .then(({ data }) => {
-        console.log(data);
-        setArticles(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  return (
-    <Container maxWidth='xl' className={styles.root}>
-      {id}
-    </Container>
-  );
+  return <Container>{id}</Container>;
 }
