@@ -1,12 +1,21 @@
 import * as React from 'react';
 import axios from 'axios';
-import ArticleList from '@components/layout/ArticleList';
 import Container from '@components/layout/Container';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import FloatingActionButton from '@components/layout/FloatingActionButton';
+import { makeStyles } from '@material-ui/core/styles';
+import { useParams } from 'react-router';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: 75,
+    padding: theme.spacing(3),
+    height: '100%',
+  },
+}));
 
 export default function () {
+  const { id } = useParams();
+  const styles = useStyles();
+
   const [articles, setArticles] = React.useState([]);
 
   React.useEffect(() => {
@@ -19,10 +28,5 @@ export default function () {
       .catch((err) => console.log(err));
   }, []);
 
-  return (
-    <Container>
-      <ArticleList articles={articles} />
-      <FloatingActionButton action='add' />
-    </Container>
-  );
+  return <Container>{id}</Container>;
 }
